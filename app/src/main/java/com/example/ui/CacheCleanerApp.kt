@@ -1172,6 +1172,9 @@ fun checkNotificationGranted(context: Context): Boolean {
 }
 
 fun checkStorageGranted(context: Context): Boolean {
+    if (checkAllFilesGranted(context)) {
+        return true
+    }
     return ContextCompat.checkSelfPermission(context, "android.permission.READ_EXTERNAL_STORAGE") == PackageManager.PERMISSION_GRANTED
 }
 
@@ -1211,6 +1214,10 @@ fun PermissionConfigurationBlock() {
     var isExpanded by remember { mutableStateOf(false) }
 
     val allConfigured = notificationGranted && storageGranted && allFilesGranted
+
+    if (allConfigured) {
+        return
+    }
 
     Card(
         shape = RoundedCornerShape(16.dp),
